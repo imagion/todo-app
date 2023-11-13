@@ -1,5 +1,7 @@
 import './style.css'
 
+import { TodoItem } from './components/TodoItem.js'
+
 document.querySelector('#app').innerHTML = `
   <div
   class="bg-neutral-700 p-8 rounded-3xl w-[min(100%,40rem)] [&>*+*]:mt-4"
@@ -15,10 +17,13 @@ document.querySelector('#app').innerHTML = `
       <button class="bg-sky-700 py-2 px-4" type="submit">Добавить</button>
     </form>
 
-    <ul class="[&>*:nth-child(odd)]:bg-neutral-500">
-      <li class="p-2">Далеко-далеко, за.</li>
-      <li class="p-2">Далеко-далеко, за.</li>
-      <li class="p-2">Далеко-далеко, за.</li>
+    <ul id="list" class="[&>*:nth-child(odd)]:bg-neutral-500">
     </ul>
   </div>
 `
+
+const list = document.getElementById('list')
+
+TodoItem(list)
+TodoItem(list)
+TodoItem(list)
