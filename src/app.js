@@ -1,6 +1,6 @@
 import './style.css'
-
 import { TodoItem } from './components/TodoItem.js'
+// import DB from '../data/db.json'
 
 document.querySelector('#app').innerHTML = `
   <div
@@ -21,18 +21,32 @@ document.querySelector('#app').innerHTML = `
     </ul>
   </div>
 `
-
 const form = document.getElementById('form')
 const list = document.getElementById('list')
 
-TodoItem(list, 'Далеко-далеко, за словесными.')
-TodoItem(list, 'Далеко-далеко, за словесными.')
-TodoItem(list, 'Далеко-далеко, за словесными.')
+const data = JSON.parse(localStorage.getItem('TODO_KEY') || '[]')
+// check if any existing todos in localStorage
+// and propagate them to the DOM
+if (data !== []) {
+  for (let item of data) {
+    TodoItem(list, item.name)
+  }
+}
 
-form.addEventListener('submit', e => {
+function handleNewTodo(e) {
   e.preventDefault()
-  const input = e.target.childNodes[1]
-  input.setAttribute('value', `${input.value}`)
-  TodoItem(list, input.value)
-  input.value = ''
-})
+  const input = e.target.childNodes[1].value
+  // not empty input value
+  if (input.trim()) {
+    console.log('🚀 -> input:', input)
+    TodoItem(list, input)
+    data.push({
+      id: data.length + 1,
+      name: input,
+      checked: false,
+    })
+    localStorage.setItem('TODO_KEY', JSON.stringify(data))
+  }
+  e.target.childNodes[1].value = ''
+}
+form.addEventListener('submit', handleNewTodo)
